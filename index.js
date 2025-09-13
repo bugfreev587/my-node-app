@@ -27,6 +27,11 @@ app.post("/api/items", (req, res) => {
     res.status(201).json(newItem);
 });
 
+app.delete("/api/items", (req, res) => {
+    items = [];
+    res.status(204).send();
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
