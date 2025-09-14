@@ -12,15 +12,15 @@ const pool = new Pool({
 });
 
 async function query(text, params) {
-  try {
+  // try {
     const res = await pool.query(text, params);
     return res;
-  } catch (err) {
-    console.error('Query error:', err);
-    throw err;
-  } finally {
-    await pool.end();
-  }
+  // } catch (err) {
+  //   console.error('Query error:', err);
+  //   throw err;
+  // } finally {
+  //   await pool.end();
+  // }
 }
 
 export async function getAll() {
