@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const dao = require('./dao');
 
 const app = express();
 const PORT = 3000;
@@ -30,6 +31,16 @@ app.post("/api/items", (req, res) => {
 app.delete("/api/items", (req, res) => {
     items = [];
     res.status(204).send();
+});
+
+app.get("/api/getAllItems", async (req, res) => {
+    try {
+        const content = await dao.getAll();
+        res.json(content);  
+    } catch (error) {
+        console.error("Error fetching items:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
 // Start server
