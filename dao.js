@@ -12,19 +12,17 @@ const pool = new Pool({
 });
 
 async function query(text, params) {
-  // try {
-    const res = await pool.query(text, params);
-    return res;
-  // } catch (err) {
-  //   console.error('Query error:', err);
-  //   throw err;
-  // } finally {
-  //   await pool.end();
-  // }
+  const res = await pool.query(text, params);
+  return res;
 }
 
 export async function getAll() {
   const result = await query('SELECT * FROM test');
   console.log(result.rows); // Array of user objects
   return result.rows;
+}
+
+export async function addItem(name) {
+  const result = await query('INSERT INTO test (name) VALUES ($1) RETURNING *', [name]);
+  return result.rows[0];
 }

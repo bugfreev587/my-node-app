@@ -9,6 +9,10 @@ const PORT = 3000;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
+
+// For form submissions (optional)
+app.use(express.urlencoded({ extended: true }));
 
 let items  = [{id: 1, name: 'Item 1'}, {id: 2, name: 'Item 2'}];
 
@@ -33,12 +37,26 @@ app.delete("/api/items", (req, res) => {
     res.status(204).send();
 });
 
-app.get("/api/getAllItems", async (req, res) => {
+app.get("/v1/getAll", async (req, res) => {
     try {
         const content = await dao.getAll();
         res.json(content);  
     } catch (error) {
         console.error("Error fetching items:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+app.post("/v1/addItem", async (req, res) => {
+    try {
+        const { name } = req.body;
+        if (!name) {
+            return res.status(400).json({ error: "Name is required" });
+        }
+        const newItem = await dao.addItem(name);
+        res.status(201).json(newItem);
+    } catch (error) {
+        console.error("Error adding item:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
